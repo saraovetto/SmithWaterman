@@ -1,0 +1,143 @@
+---
+title: "SmithWaterman R package for local sequence alignment"
+author:
+- name: Sara Ometto
+  email: sara.ometto@mail.polimi.it
+package: SmithWaterman
+output:
+  BiocStyle::html_document
+abstract: |
+  This package contains a function smith_waterman that finds the optimal local sequence alignment of two nucleic acid sequences according to the Smith Waterman greedy algorithm.
+vignette: |
+  %\VignetteIndexEntry{Smith-Waterman R package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r style, echo=FALSE, message=FALSE}
+library(BiocStyle)
+library(knitr)
+```
+
+# Using the SmithWaterman package for local sequence alignment
+
+## Introduction
+
+This package was created for the Scientific Programming course delivered by Politecnico of Milan, included in the Bioinformatics for Computational Genomics MSc.
+
+The aim of the project was to implement a pairwise local sequence alignment function to find the optimal alignment between two nucleotide sequences, using the Smith-Waterman greedy algorithm.
+
+This vignette demonstrates how to use the **`SmithWaterman`** package in R to perform such alignment.
+
+## Smith - Waterman algorithm
+
+The [Smith-Waterman algorithm](https://en.wikipedia.org/wiki/Smith–Waterman_algorithm) is a widely used bioinformatics tool for comparing two nucleic acid sequences and finding the best local alignment: it compares segments of all possible lengths and optimizes the similarity measure. It is guaranteed to find the optimal local alignment (or one of the best) with respect to the scoring system being used.
+
+## Installation and dependencies
+
+The only dependency this package has is **`Biostrings`**, which is used to handle better the input and the output. So to be able to install this package, **`Biostrings`** must be installed.
+
+To manually install Biostrings from BiocManager: `BiocManager::install("Biostrings")`
+
+After that, `SmithWaterman` can be installed from the command line as follows: `R CMD install SmithWaterman_0.1.0.tar.gz`.
+
+To load the packages if they have been already installed:
+
+```{r loading packages, message=FALSE, warning=FALSE}
+library("Biostrings")
+
+library("SmithWaterman")
+```
+
+## Input sequences
+
+There are four functions in the package, but the user only needs to focus on one: **`smith_waterman`**. This function requires two nucleic acid sequences as input. These sequences can be either strings or `DNAString`/`DNAStringSet` objects from the **`Biostrings`** package, there is no such problem of different type of objects given as input.
+
+**`Biostrings`** allows the user to retreive the sequences from a FASTA or FASTQ file: see the [Examples] section for more information.
+
+```{r Example DNA sequences}
+seq_a <- 'GCATGCG'
+seq_b <- DNAString('GATTACA')
+```
+
+## Scoring parameters
+
+Before running the alignment, you can set the scoring parameters or use the default scoring system of the package: 2 points for a nucleotide match, -1 for a mismatch and -1 as the gap penalty. Both insertions and deletions are the operations that introduce gaps, which are represented by dashes in the alignment.
+
+IMPORTANT*:* the scoring parameters must be integers!
+
+```{r Example scoring system}
+match_score <- 4
+mismatch_score <- -2
+gap_penalty <- -2
+```
+
+Even though is possible to use a scoring matrix with a specific score for each different pairwise comparison in the Smith-Waterman algorithm, the package does not provide this option.
+
+## Finding the best alignment
+
+The `smith_waterman` function is used to run the alignment. The following code shows the application of the function on the two example sequences defined earlier:
+
+```{r Optimal local alignment}
+alignment_result1 <- smith_waterman(seq_a, seq_b, match_score, mismatch_score, gap_penalty)
+print(alignment_result1)
+```
+
+The function returns a list with the following information on the alignment:
+
+-   **optimal_alignment**: a `DNAStringSet` object of the best local alignment found
+-   **score**: the numeric score associated to the optimal alignment
+-   **positions**: a matrix with start and end position of the alignment on each sequence
+
+Each element of the list can be accessed using the "**\$**" operator in R if the result of the function is saved in a variable. If the two sequences are shorter than 20 nucleotides, the scoring matrix and the directions matrix are added to the list and shown in the output.
+
+## Data
+
+This package contains also two example sequences in FASTA file format. The sequences come from two different species of the [Saccharomycetaceae](https://en.wikipedia.org/wiki/Saccharomycetaceae) family: *Saccharomyces cerevisiae* and *Kluyveromyces lactis*.
+
+The first one is the DNA sequence of GCV3: a protein coding gene for a subunit of the glycine decarboxylase. The second DNA sequence is a gene producing an uncharacterized protein which could be the putative homolog of GCV3 in *K. lactis*.
+
+Since both of them are FASTA files, they first need to be saved in a DNAString object:
+
+```{r FASTA files}
+fastafileSC <- system.file("extdata", "Scerevisiae.fasta", package="SmithWaterman", 
+                           mustWork = TRUE)
+fastafileKL <- system.file("extdata", "Klactis.fasta", package="SmithWaterman", 
+                           mustWork = TRUE)
+
+seqsetSC <- readDNAStringSet(fastafileSC)
+seqsetKL <- readDNAStringSet(fastafileKL)
+
+# the readDNAStringSet function always saves the file content in a DNAStringSet object 
+# so it is important to take the first element to create a DNAString object:
+GCV3_Scerevisiae <- seqsetSC[[1]]
+Klactis <- seqsetKL[[1]]
+```
+
+The first sequence can be also retrieved from `yeastSEQCHR1` data included in the `Biostrings` package, because the GCV3 gene is located on chromosome 1.
+
+------------------------------------------------------------------------
+
+## Example
+
+This is a real-word example of how the algorithm can be used to find the best alignment on two genes of \~500 nt length. The sequences used are the ones from two yeast species introduced in the previous section: GCV3 gene located on chromosome 1 of *S. cerevisiae* and its putative homolog in *K. lactis.*
+
+```{r}
+start_time <- Sys.time()
+alignment_result2 <- smith_waterman(GCV3_Scerevisiae, Klactis)
+end_time <- Sys.time()
+
+show(alignment_result2)
+```
+
+```{r execution time, echo=FALSE}
+cat("Time of execution: ", (end_time - start_time), "seconds.")
+```
+
+------------------------------------------------------------------------
+
+## Session info {.unnumbered}
+
+```{r sessionInfo, echo=FALSE}
+sessionInfo()
+```

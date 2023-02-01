@@ -1,0 +1,23 @@
+Package: SmithWaterman
+Type: Package
+Title: Pariwise Local Sequence Alignment of Two Nucleic Acid Sequences
+Description: Contains a function that performs local sequence alignment according to the Smith Waterman greedy algorithm.
+    It finds the optimal local alignment of two nucleotide sequences in terms of score.
+    This package was created for the Scientific Programming course delivered by Politecnico of Milan,
+    included in the Bioinformatics for Computational Genomics MSc.
+Version: 0.1.0
+Date: 2023-01-25
+Authors@R: person("Sara", "Ometto", email = "sara.ometto@mail.polimi.it", role = c("aut", "cre"))
+License: GPL-2
+Encoding: UTF-8
+Depends: R(>= 4.1.0), Biostrings, methods
+Suggests: knitr, rmarkdown, testthat, BiocStyle
+VignetteBuilder: knitr
+RoxygenNote: 7.2.3
+biocViews: Software, BiologicalQuestion, SequenceMatching,
+        BiomedicalInformatics, Genetics, Alignment, Sequencing,
+        DataImport
+NeedsCompilation: no
+Packaged: 2023-01-27 10:33:39 UTC; sara
+Author: Sara Ometto [aut, cre]
+Maintainer: Sara Ometto <sara.ometto@mail.polimi.it>

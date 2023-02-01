@@ -1,0 +1,13 @@
+The two example sequences present in this package are in FASTA file format.
+
+The first one is from S.cerevisiae and is the sequence of the GCV3 gene on chromosome 1.
+It is a protein coding gene which encodes for subunit H of glycine decarboxylase.
+The FASTA was downloaded from NCBI database.
+NCBI Reference Sequence: NC_001133.9, Gene ID: 851254
+Source url: https://www.ncbi.nlm.nih.gov/nuccore/NC_001133.9?report=fasta&from=57950&to=58462&strand=true
+
+The second is from K.lactis, it is the sequence of a protein coding gene on chromosome A.
+The protein is uncharacterized, but it is similar to GCV3 so it could be a putative homolog.
+The FASTA was downloaded from NCBI database.
+NCBI Reference Sequence: NC_006037.1, Gene ID: 2896641
+Source url: https://www.ncbi.nlm.nih.gov/nuccore/NC_006037.1?report=fasta&from=324491&to=325018&strand=true
