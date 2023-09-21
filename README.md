@@ -9,4 +9,5 @@ This R package contains the "smith_waterman" function which takes as input 2 nuc
 
 The package provides also two example sequences in FASTA file format to test the alignment. The sequences come from two different species of the Saccharomycetaceae family.
 
-vignette link: https://htmlpreview.github.io/?https://github.com/saraovetto/SmithWaterman/blob/main/SmithWaterman%20package/SmithWaterman.html
+### Documentation
+Here you can find the [vignette](https://htmlpreview.github.io/?https://github.com/saraovetto/SmithWaterman/blob/main/SmithWaterman%20package/SmithWaterman.html).
